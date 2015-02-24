@@ -1,0 +1,620 @@
+<div class="container-fluid" >
+	<div class="row hidden-xs hidden-sm" style="font-weight: bold; border-bottom: 1px solid black;">
+		<div class="col-md-1">Priority</div>
+		<div class="col-md-4">Task</div>
+		<div class="col-md-2">Due date</div>
+		<div class="col-md-1">Folder</div>
+		<div class="col-md-1">Context</div>
+		<div class="col-md-1">Location</div>
+		<div class="col-md-1">Tags</div>
+		<div class="col-md-1">Repeat</div>
+	</div>
+</div>
+<div class="container-fluid" id="table-tasks">
+</div>
+<!-- Search tasks -->
+<nav class="navbar navbar-default navbar-fixed-bottom" style="min-height: 54px" id="moodledo-task-search-navbar">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" style="margin: 5px 15px;" data-toggle="collapse" data-target="#moodledo-task-search-navbar-collapse">
+				<span class="sr-only">Task search menu</span>
+				<span class="glyphicon glyphicon-search"></span>
+			</button>
+			<a class="navbar-brand" style="padding: 5px 15px; height: 54px;" href="#">
+				<button type="button" class="btn btn-default" data-toggle="modal" data-target="#moodledo-task-save" id="task-add">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-default" id="search-hotlist" aria-label="Filter hotlist">
+					<span class="glyphicon glyphicon-asterisk text-muted" aria-hidden="true"></span>
+				</button>
+			</a>
+		</div>
+		<div class="collapse navbar-collapse" id="moodledo-task-search-navbar-collapse">
+		  <ul class="nav navbar-nav">
+			<li style="padding: 5px 15px;">
+				<input type="text" class="form-control" placeholder="Search" id="filter-task-title">
+			</li>
+			<li style="padding: 5px 15px;">
+				<div class="btn-group" role="group">
+					<div class="btn-group dropup">
+						<button type="button" class="btn btn-default" aria-label="Filter on folders"><span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span></button>
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<span class="caret"></span>
+							<span class="sr-only">Folders</span>
+						</button>
+						<ul class="dropdown-menu" role="menu" id="search-folders">
+							<li><a href="#" id="filter-folder-all">All</a></li>
+							<li class="divider"></li>
+						</ul>
+					</div>
+					<div class="btn-group dropup">
+						<button type="button" class="btn btn-default" aria-label="Filter on contexts"><span class="glyphicon glyphicon-briefcase" aria-hidden="true"></span></button>
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<span class="caret"></span>
+							<span class="sr-only">Contexts</span>
+						</button>
+						<ul class="dropdown-menu" role="menu" id="search-contexts">
+							<li><a href="#" id="filter-folder-all">All</a></li>
+							<li class="divider"></li>
+						</ul>
+					</div>
+					<div class="btn-group dropup">
+						<button type="button" class="btn btn-default" aria-label="Filter on  locations"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span></button>
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<span class="caret"></span>
+							<span class="sr-only">Locations</span>
+						</button>
+						<ul class="dropdown-menu" role="menu" id="search-locations">
+							<li><a href="#" id="filter-location-all">All</a></li>
+							<li class="divider"></li>
+						</ul>
+					</div>
+				</div>
+			</li>
+			<li style="padding: 5px 15px;">
+				<div class="btn-group" role="group">
+					<button type="button" class="btn btn-default" id="search-star" aria-label="Filter on stars">
+						<span class="glyphicon glyphicon-star text-muted" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default" id="search-priority" aria-label="Filter on  priorities">
+						<span class="glyphicon glyphicon-hand-right text-muted" aria-hidden="true"></span>
+					</button>
+					<button type="button" class="btn btn-default" id="search-completed" aria-label="Filter on locations">
+						<span class="glyphicon glyphicon-download-alt text-muted" aria-hidden="true"></span>
+					</button>
+				</div>
+				<div class="pull-right">
+					<button type="button" class="btn btn-default text-right" id="search-reset" aria-label="Reset all filters">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+					</button>
+				</div>
+			</li>
+		  </ul>
+		</div>
+	</div>
+</nav>
+
+<!-- Edit task -->
+<nav class="navbar navbar-default navbar-fixed-bottom hidden" style="min-height: 54px" id="moodledo-task-edit-navbar">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" style="margin: 5px 15px;" data-toggle="collapse" data-target="#moodledo-task-edit-navbar-collapse">
+				<span class="sr-only">Task edit menu</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" style="padding: 5px 15px; height: 54px;" href="#">
+				<button type="button" class="btn btn-default text-right" id="task-edit-completed">
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-default text-right" id="task-edit-star">
+					<span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+				</button>
+				<button type="button" class="btn btn-default text-right" id="task-edit-calendar">
+					<span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+				</button>
+							
+			</a>
+		</div>
+		<div class="collapse navbar-collapse" id="moodledo-task-edit-navbar-collapse">
+		  <ul class="nav navbar-nav">
+			<li style="padding: 5px 15px;">
+				<button type="button" class="btn btn-default" data-target="#moodledo-task-save" id="task-edit">
+					<span class="glyphicon glyphicon-pencil"></span>
+				</button>
+				<button type="button" class="btn btn-default text-right" id="task-delete">
+					<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+				</button>
+			</li>
+		  </ul>
+		</div>
+	</div>
+</nav>
+
+<!-- Add/Edit task -->
+<!-- Additionally, you can set the "reschedule" variable to "1" if you want Toodledo to automatically reschedule the repeating task for you. This will only apply if you also set the completion date, and if the task has a due-date and repeating value. If you do not set this, then you are responsible for rescheduling repeating tasks yourself, as well as properly handling any subtasks that the task may have. It is recommended that you allow Toodledo to reschedule repeating tasks for you. -->
+<div class="modal fade" id="moodledo-task-save" tabindex="-1" role="dialog" aria-labelledby="task-save-title" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="task-save-title">Create a new task</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="input-title" class="col-sm-2 control-label">Task</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="input-title" placeholder="Task">
+						</div>
+					</div>
+				</form>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="input-duedate" class="col-sm-2 control-label">Due Date</label>
+						<div class="col-sm-10">
+							<input type="date" class="form-control" id="input-duedate">
+						</div>
+					</div>
+				</form>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="input-folder" class="col-sm-2 control-label">Folder</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="input-folder">
+							</select>
+						</div>
+					</div>
+				</form>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="input-context" class="col-sm-2 control-label">Context</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="input-context">
+							</select>
+						</div>
+					</div>
+				</form>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="input-goal" class="col-sm-2 control-label">Goal</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="input-goal">
+							</select>
+						</div>
+					</div>
+				</form>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="input-location" class="col-sm-2 control-label">Location</label>
+						<div class="col-sm-10">
+							<select class="form-control" id="input-location">
+							</select>
+						</div>
+					</div>
+				</form>
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label for="input-tags" class="col-sm-2 control-label">Tags</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" id="input-tags" aria-describedby="input-tags-help" placeholder="Tags">
+						</div>
+						<span id="input-tags-help" class="help-block">Enter tags separated by a comma ','</span>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="task-save-btn">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+var folders = {};
+var contexts = {};
+var goals = {};
+var locations = {};
+var filters = {};
+var selectedTask = -1;
+
+function loadFolders() {
+	$.ajax({
+		type: 'POST',
+		url: 'toodledo_api.php',
+		data: { req_scope: 'folders', req_method: 'get'},
+		success: function(data){
+			folders = JSON.parse(data);
+			$.each(folders, function(i,item){
+				if(item.id) {
+					$('#search-folders').append("<li><a href=\"#\" id=\"filter-folder-"+item.id+"\">"+item.name+"</a></li>");
+					$('#input-folder').append($('<option/>', { 
+						value: item.id,
+						text : item.name 
+					}));
+				}
+			});
+			loadContexts();
+		},
+		error: function(e){
+			console.log(e.responseText);
+		}
+	});
+}
+function loadContexts() {
+	$.ajax({
+		type: 'POST',
+		url: 'toodledo_api.php',
+		data: { req_scope: 'contexts', req_method: 'get'},
+		success: function(data){
+			contexts = JSON.parse(data);
+			$.each(contexts, function(i,item){
+				if(item.id) {
+					$('#search-contexts').append("<li><a href=\"#\" id=\"filter-context-"+item.id+"\">"+item.name+"</a></li>");
+					$('#input-context').append($('<option/>', { 
+						value: item.id,
+						text : item.name 
+					}));
+				}
+			});
+			loadGoals();
+		},
+		error: function(e){
+			console.log(e.responseText);
+		}
+	});
+}
+function loadGoals() {
+	$.ajax({
+		type: 'POST',
+		url: 'toodledo_api.php',
+		data: { req_scope: 'goals', req_method: 'get'},
+		success: function(data){
+			goals = JSON.parse(data);
+			loadLocations();
+		},
+		error: function(e){
+			console.log(e.responseText);
+		}
+	});
+}
+function loadLocations() {
+	$.ajax({
+		type: 'POST',
+		url: 'toodledo_api.php',
+		data: { req_scope: 'locations', req_method: 'get'},
+		success: function(data){
+			locations = JSON.parse(data);
+			$.each(locations, function(i,item){
+				if(item.id) {
+					$('#search-locations').append("<li><a href=\"#\" id=\"filter-location-"+item.id+"\">"+item.name+"</a></li>");
+					$('#input-location').append($('<option/>', { 
+						value: item.id,
+						text : item.name 
+					}));
+				}
+			});
+			loadTasks();
+		},
+		error: function(e){
+			console.log(e.responseText);
+		}
+	});
+}
+function loadTasks() {
+	$.ajax({
+		type: 'POST',
+		url: 'toodledo_api.php',
+		data: { req_scope: 'tasks', req_method: 'get', req_fields: 'folder,context,location,tag,duedate,repeat,star,priority' },
+		success: function(data){
+			data = JSON.parse(data);
+			var previousDueDate = 'Undefined';
+			$.each(data, function(i,item){
+				if(item.id)
+				{
+					// Processed data
+					var dueDate = "";
+					if(item.duedate) {
+						var ONE_DAY = 24*60*60*1000;
+						var today = new Date();
+						var tommorow = new Date(today.getTime()+ONE_DAY);
+						var two_days = new Date(today.getTime()+2*ONE_DAY);
+						var next_week = new Date(today.getTime()+7*ONE_DAY);
+						var next_month = new Date(today.getTime()+30*ONE_DAY);
+						var date = new Date(item.duedate*1000);
+						if(date.getTime()-today.getTime()<0) {
+							dueDate = "Over due";
+						}
+						else if(date.getTime()-tommorow.getTime()<0) {
+							dueDate = "Today";
+						} else if(date.getTime()-two_days.getTime()<0) {
+							dueDate = "Tommorow";
+						} else if(date.getTime()-next_week.getTime()<0) {
+							dueDate = "Next week";
+						} else if(date.getTime()-next_month.getTime()<0) {
+							dueDate = "Next month";
+						} else {
+							dueDate = "Long term";
+						}
+					}
+					else {
+						dueDate = "No due date";
+					}
+					if(dueDate != previousDueDate)
+					{	var line = "<div class=\"row row_date breadcrumb\">";
+						line += "<div class=\"col-xs-12 col-md-12 \">"+dueDate+"</div>";
+						line += "</div>";
+						$("#table-tasks").append(line);
+						previousDueDate = dueDate;
+					}
+						
+					var tagSplit = item.tag.split(" ");
+					var tags = '';
+					for(var i = 0; i < tagSplit.length; i++){
+						tags += "<span class=\"label label-default\">"+tagSplit[i]+"</span>&nbsp;";
+					}
+					var line = "<div class=\"row row_tasks "+(item.completed?"strikethrough":"")+"\" id=\"tasks_"+item.id+"\">";
+					line += "<div class=\"col-xs-1 col-md-1 ellipsis\">";
+					if(item.star>0)
+						line += "<span class=\"glyphicon glyphicon-star\" aria-hidden=\"true\"></span>";
+					line += "&nbsp;";
+					if(item.priority>1)
+						line += "<span class=\"glyphicon glyphicon-hand-right "+(item.priority==3?"text-danger":"")+"\" aria-hidden=\"true\"></span>";
+					line += "</div>";
+					line += "<div class=\"col-xs-8 col-md-4 ellipsis\"> "+item.title+" </div>";
+					line += "<div class=\"visible-xs visible-sm col-xs-3 ellipsis text-right\"><span style=\"font-size: 80%\">"+(item.duedate>0?new Date(item.duedate*1000).toISOString().slice(0, 10):"&nbsp;")+"</span></div>";
+					line += "<div class=\"hidden-xs hidden-sm col-md-2 ellipsis\"><span style=\"font-size: 80%\">"+(item.duedate>0?new Date(item.duedate*1000).toUTCString().slice(0,17):"&nbsp;")+"</span></div>";
+					line += "<div class=\"visible-xs visible-sm col-xs-6\"><span class=\"text-muted\" style=\"font-size: 90%\">";
+					line += (item.folder>0?"<span class=\"glyphicon glyphicon-folder-open\"></span> &nbsp; "+getName(folders, item.folder):"&nbsp;");
+					line += (item.context>0?"<span class=\"glyphicon glyphicon-briefcase\"></span> "+getName(contexts, item.context):"&nbsp;");
+					line += (item.location>0?"<span class=\"glyphicon glyphicon-map-marker\"></span> "+getName(locations, item.location):"&nbsp;");
+					line += "</span></div>"; 
+					line += "<div class=\"hidden-xs hidden-sm col-md-1\"><span class=\"text-muted\" style=\"font-size: 90%\">";
+					line += (item.folder>0?"<span class=\"glyphicon glyphicon-folder-open\"></span> &nbsp; "+getName(folders, item.folder):"&nbsp;");
+					line += "</span></div>";
+					line += "<div class=\"hidden-xs hidden-sm col-md-1\"><span class=\"text-muted\" style=\"font-size: 90%\">";
+					line += (item.context>0?"<span class=\"glyphicon glyphicon-briefcase\"></span> "+getName(contexts, item.context):"&nbsp;");
+					line += "</span></div>";
+					line += "<div class=\"hidden-xs hidden-sm col-md-1\"><span class=\"text-muted\" style=\"font-size: 90%\">";
+					line += (item.location>0?"<span class=\"glyphicon glyphicon-map-marker\"></span> "+getName(locations, item.location):"&nbsp;");
+					line += "</span></div>";
+					line += "<div class=\"col-xs-5 col-md-1 ellipsis\"> "+tags+" </div>";
+					line += "<div class=\"col-xs-1 col-md-1 ellipsis text-muted\">"+(item.repeat?"<span class=\"visible-xs visible-sm glyphicon glyphicon-repeat\"></span><span class=\"hidden-xs hidden-sm\">"+item.repeat+"</span>":"")+"</div>";
+					line += "</div>";
+					$("#table-tasks").append(line);
+					$("#tasks_"+item.id).data(item);
+					$("#tasks_"+item.id).click(function(event) {
+						selectTask(event.currentTarget.id);
+					});
+				}
+			});
+			// Default view
+			filters = {completed: 0}; // filter completed tasks - Default could switch to hotlist view
+			filterTasks();
+		},
+		error: function(e){
+			console.log(e.responseText);
+		}
+	});
+}
+
+/**
+ * Look for an item in the array having a property 'id' equals to the value of the 'id' parameter, and returns its name property.
+ * Returns the id if no match 
+ */
+function getName(array, id) {
+	if(id==0)
+		return ''; // Means 'Undefined'
+	for (var i = 0; i< array.length; i++) {
+		if(array[i].id == id){
+			return array[i].name;
+		}
+	}
+	return id;
+}
+
+
+function addFilter(property, value){
+	filters[property] = value;
+	filterTasks();
+}
+
+function removeFilter(property) {
+	delete filters[property];
+	filterTasks();
+}
+
+function filterTasks() {
+	$('div.row_tasks').each(function(index, value) {
+		var id = $(this).attr('id');
+		var data = $('#'+id).data();
+		var displayRow = true;
+		$.each(filters, function(key, value) {
+			if(key=='title'){
+				if(value && value.length>0)
+				{
+					if(data[key].toLowerCase().indexOf(value.toLowerCase())<0)
+					{
+						displayRow = false;
+						return false;
+					}
+				}
+			}
+			else if(key=='completed'){
+				if(data[key] > value && value == 0)
+				{
+					displayRow = false;
+					return false;
+				}
+			} else if(key=='priority'){
+				if(data[key] < value)
+				{
+					displayRow = false;
+					return false;
+				}
+			}
+			else {
+				if(data[key] != value)
+				{
+					displayRow = false;
+					return false;
+				}
+			}
+		});
+		if(displayRow)
+			$('#'+id).removeClass("hidden");
+		else
+			$('#'+id).addClass("hidden");
+	});
+};
+
+function applyFilter(spanId, filterId, filterValue, removeFilterValue = 'undefined'){
+	var activeClass = $('#'+spanId+' span').attr("class");
+	if(activeClass.indexOf("text-muted") >= 0)
+	{
+		$('#'+spanId+' span').removeClass("text-muted");
+		addFilter(filterId, filterValue);
+	}
+	else {
+		$('#'+spanId+' span').addClass("text-muted");
+		if(removeFilterValue != 'undefined')
+			addFilter(filterId, removeFilterValue);
+		else
+			removeFilter(filterId);
+	}
+}
+
+function applyListFilter(type, id){
+	if(id.indexOf('filter-'+type+'-') == 0)
+	{
+		if(id=='filter-'+type+'-all')
+			removeFilter(type);
+		else
+			addFilter(type, id.substring(('filter-'+type+'-').length));
+	}
+	else
+		console.log(type+' filter not applied >',id);
+}
+
+function selectTask(taskId) {
+	if (selectedTask == taskId){
+		selectedTask = -1;
+	} else {
+		selectedTask = taskId;
+	}
+			
+	$('div.row_tasks').each(function(index, value) {
+		var id = $(this).attr('id');
+		if(id == selectedTask) {
+			$('#'+id).addClass('bg-primary');
+		}
+		else {
+			$('#'+id).removeClass('bg-primary');
+		}
+	});
+	if(selectedTask<0) {
+		$('#moodledo-task-edit-navbar').addClass("hidden");
+		$('#moodledo-task-search-navbar').removeClass("hidden");
+	} else {
+		$('#moodledo-task-search-navbar').addClass("hidden");
+		$('#moodledo-task-edit-navbar').removeClass("hidden");	
+	}
+}
+
+
+$(document).ready(function(){
+	// Load all data starting with folders
+	loadFolders();
+	
+	// Manage events
+	$(function(){
+		$('#filter-task-title').data('val',  $('#filter-task-title').val() ); // save value
+		$('#filter-task-title').change(function() { // works when input will be blured and the value was changed
+			addFilter('title', $('#filter-task-title').data('val'));
+		});
+		$('#filter-task-title').keyup(function() { // works immediately when user press button inside of the input
+			if( $('#filter-task-title').val() != $('#filter-task-title').data('val') ){ // check if value changed
+				$('#filter-task-title').data('val',  $('#filter-task-title').val() ); // save new value
+				$(this).change(); // simulate "change" event
+			}
+		});
+	});
+	
+	$('#search-hotlist').click(function(event) {
+		var activeClass = $('#search-hotlist span').attr("class");
+		if(activeClass.indexOf("text-muted") >= 0)
+		{
+			$('#search-hotlist span').removeClass("text-muted");
+			if(user){
+				filters = {};
+				if(user.hotlistpriority)
+					addFilter('priority', user.hotlistpriority);
+				if(user.hotliststar )
+					addFilter('star', user.hotliststar);
+			}
+		}
+		else {
+			$('#search-hotlist span').addClass("text-muted");
+			removeFilter('priority');
+			removeFilter('star');
+		}
+	
+		
+	});
+	
+	$('#search-folders').click(function(event) {
+		applyListFilter('folder', event.target.id);
+	});
+	$('#search-contexts').click(function(event) {
+		applyListFilter('context', event.target.id);
+	});
+	$('#search-locations').click(function(event) {
+		applyListFilter('location', event.target.id);
+	});
+	
+	$('#search-star').click(function(event) {
+		applyFilter('search-star', 'star', 1);
+	});
+	
+	$('#search-completed').click(function(event) {
+		applyFilter('search-completed', 'completed', -1, 0);
+	});
+		
+	$('#search-priority').click(function(event) {
+		var activeClass = $('#search-priority span').attr("class");
+		if(activeClass.indexOf("text-muted") >= 0)
+		{
+			$('#search-priority span').removeClass("text-muted");
+			addFilter('priority', 2);
+		} else if(activeClass.indexOf("text-danger") >= 0) {
+			$('#search-priority span').removeClass("text-danger");
+			$('#search-priority span').addClass("text-muted");
+			removeFilter('priority');
+		}
+		else {
+			$('#search-priority span').addClass("text-danger");
+			addFilter('priority', 3);
+		}
+	});
+	
+	$('#search-reset').click(function(event) {
+		filters = {completed: 0};
+		filterTasks();
+		$('#filter-task-title').val('');
+				
+		$('#search-priority span').removeClass("text-muted");
+		$('#search-priority span').removeClass("text-danger");
+		$('#search-priority span').addClass("text-muted");
+			
+		$('#search-star span').removeClass("text-muted");
+		$('#search-star span').addClass("text-muted");
+		
+		$('#search-completed span').removeClass("text-muted");
+		$('#search-completed span').addClass("text-muted");
+	});
+	
+	$('#task-edit-completed').click(function(event) {
+	});
+});
+</script> 
