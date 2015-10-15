@@ -1,3 +1,5 @@
+This interface will not be updated by the original author (I stopped using toodledo).
+
 # Moodledo
 Responsive design interface for http://www.toodledo.com in PHP/HTML 5 (using bootstrap).
 
