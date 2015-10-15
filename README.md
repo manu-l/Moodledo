@@ -1,7 +1,7 @@
 # Moodledo
 Responsive design interface for http://www.toodledo.com in PHP/HTML 5 (using bootstrap).
 
-For now this application only allows user to consult their data, edit will come soon (buttons are ready!).
+For now this application only allows user to consult their data.
 
 ## How to test/use
 
