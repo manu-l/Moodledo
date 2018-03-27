@@ -9,7 +9,4 @@ For now this application only allows user to consult their data.
 
 You can install this application on your own server. Please check the wiki for more information.
 
-OR
-
-You can test this application on http://www.lebel.tf/toodledo
 
